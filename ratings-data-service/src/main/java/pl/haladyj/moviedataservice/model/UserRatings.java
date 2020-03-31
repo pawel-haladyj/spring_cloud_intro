@@ -1,16 +1,14 @@
-package pl.haladyj.springcloudintro.model;
+package pl.haladyj.moviedataservice.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Rating {
-
-    private String movieId;
-    private Integer rating;
+public class UserRatings {
+    private List<Rating> ratings;
 }
-
-
