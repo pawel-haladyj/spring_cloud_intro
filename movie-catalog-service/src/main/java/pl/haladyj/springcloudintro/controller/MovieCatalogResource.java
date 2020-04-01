@@ -1,6 +1,9 @@
 package pl.haladyj.springcloudintro.controller;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.AutoConfigurationPackage;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,6 +14,8 @@ import pl.haladyj.springcloudintro.model.CatalogItem;
 import pl.haladyj.springcloudintro.model.Movie;
 import pl.haladyj.springcloudintro.model.Rating;
 import pl.haladyj.springcloudintro.model.UserRatings;
+import pl.haladyj.springcloudintro.service.MovieInfo;
+import pl.haladyj.springcloudintro.service.UserRatingInfo;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -27,20 +32,23 @@ public class MovieCatalogResource {
     @Autowired
     private WebClient.Builder webClientBuilder;
 
+    @Autowired
+    MovieInfo movieInfo;
+
+    @Autowired
+    UserRatingInfo userRatingInfo;
+
     @GetMapping("/{userId}")
     public List<CatalogItem> getCatalog(@PathVariable("userId") String userId) {
 
-/*        List<Rating> ratings = Arrays.asList(
-                new Rating("1234", 4),
-                new Rating("5678", 3)
-        );*/
-
-        UserRatings ratings = restTemplate.getForObject("http://ratings-data-service/ratingsdata/users/" + userId,
-                UserRatings.class);
+        UserRatings ratings = userRatingInfo.getUserRating(userId);
 
         return ratings.getRatings().stream()
-                .map(rating -> {
-                    Movie movie = restTemplate.getForObject("http://movie-info-service/movies/" + rating.getMovieId(), Movie.class);
+                .map(rating -> movieInfo.getCatalogItem(rating))
+                .collect(Collectors.toList());
+
+    }
+}
 
 /*                Movie movie = webClientBuilder.build()
                         .get()
@@ -48,9 +56,3 @@ public class MovieCatalogResource {
                         .retrieve()
                         .bodyToMono(Movie.class)
                         .block();*/
-
-                    return new CatalogItem(movie.getName(), movie.getDescription(), rating.getRating());
-                })
-                .collect(Collectors.toList());
-    }
-}

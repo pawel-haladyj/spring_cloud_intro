@@ -8,5 +8,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserRatings {
+    private String userId;
     private List<Rating> ratings;
 }
