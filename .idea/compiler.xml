@@ -7,6 +7,7 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="zuul-service" />
         <module name="movie-catalog-service" />
         <module name="ratings-data-service" />
         <module name="discovery-server" />
@@ -18,6 +19,7 @@
       <module name="movie-catalog-service" target="11" />
       <module name="movie-info-service" target="11" />
       <module name="ratings-data-service" target="11" />
+      <module name="zuul-service" target="11" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
@@ -26,6 +28,7 @@
       <module name="movie-catalog-service" options="-parameters" />
       <module name="movie-info-service" options="-parameters" />
       <module name="ratings-data-service" options="-parameters" />
+      <module name="zuul-service" options="-parameters" />
     </option>
   </component>
 </project>
